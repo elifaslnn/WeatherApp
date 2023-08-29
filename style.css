@@ -1,0 +1,24 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+#cities {
+  margin-top: 20px;
+}
+.city {
+  margin-top: 5px;
+  /* padding-left: 8px; */
+  padding-top: 3px;
+  padding-bottom: 3px;
+  border-radius: 8px;
+  background-color: rgba(7, 17, 47, 0.39);
+  cursor: pointer;
+}
+.city:hover {
+  background-color: #333333aa;
+  color: aliceblue;
+}
+#searchWindow {
+  display: none;
+}
