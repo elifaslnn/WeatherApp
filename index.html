@@ -39,7 +39,7 @@
       style="
         max-width: 350px;
         border-radius: 20px;
-        background-image: url(wallpaper/sun1.jpg);
+        background: linear-gradient(rgb(110, 152, 234), rgb(180, 244, 251));
       "
     >
       <div
@@ -57,7 +57,10 @@
         </div>
         <div class="col-10 d-flex justify-content-end mt-4">
           <i class="fa-solid fa-location-dot pt-2" style="color: #d64c4c"></i>
-          <p style="padding-left: 5px; padding-right: 20px; padding-top: 5px">
+          <p
+            style="padding-left: 5px; padding-right: 20px; padding-top: 5px"
+            id="cityName"
+          >
             İstanbul
           </p>
           <i class="fa-regular fa-circle-half-stroke pt-2"></i>
@@ -69,6 +72,7 @@
       <div
         class="row d-flex justify-content-center mt-3"
         style="font-size: larger"
+        id="weatherCondition"
       >
         Güneşli
       </div>
@@ -119,7 +123,7 @@
       style="
         max-width: 350px;
         border-radius: 20px;
-        background-image: url(wallpaper/sun1.jpg);
+        background: linear-gradient(rgb(110, 152, 234), rgb(180, 244, 251));
         height: 600px;
       "
     >
@@ -145,9 +149,10 @@
       </div>
       <ul id="cities" style="list-style-type: none">
         <li class="city d-flex">
-          <div class="col d-flex justify-content-start">Konumum</div>
+          <div class="col d-flex justify-content-start cityc">Konumum</div>
           <div
             class="col-1 mr-1 d-flex justify-content-center align-items-center"
+            id="deleteBtn"
             style="background-color: #00000063; width: 20px; border-radius: 5px"
           >
             <i
@@ -157,7 +162,7 @@
           </div>
         </li>
         <li class="city d-flex">
-          <div class="col d-flex justify-content-start">Ankara</div>
+          <div class="col d-flex justify-content-start cityc">Ankara</div>
           <div
             class="col-1 mr-1 d-flex justify-content-center align-items-center"
             style="background-color: #00000063; width: 20px; border-radius: 5px"
