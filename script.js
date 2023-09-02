@@ -78,12 +78,51 @@ const change_weather = (city_to_replace) => {
       .then(function (response) {
         return response.json();
       })
-      .then(async function (weathers) {
-        console.log(weathers.weather[0].main);
-        return weathers.weather[0].main;
-      })
-      .then((data) => {
-        weatherCondition.innerHTML = data;
+      .then(function (weathers) {
+        const weather = weathers.weather[0].main;
+        weatherCondition.innerHTML = weather;
+        change_weatherIcon(weather);
+
+        const windSpeed = weathers.wind.speed;
+        change_windSpeed(Math.floor(windSpeed));
+
+        const humidity = weathers.main.humidity;
+        change_humidity(humidity);
+
+        const temp = weathers.main.temp;
+        change_temp(Math.floor(temp));
       });
   });
+};
+
+const weatherIcon = document.getElementById("weatherIcon");
+const change_weatherIcon = (weather) => {
+  if (weather == "Clouds") {
+    weatherIcon.src = "weatherIcon/cloudy.png";
+  } else if (weather === "Rain") {
+    weatherIcon.src = "weatherIcon/rain.png";
+  } else if (weather === "Clear") {
+    weatherIcon.src = "weatherIcon/sun.png";
+  } else if (weather === "snow") {
+    weatherIcon.src = "weatherIcon/snow.png";
+  }
+};
+
+const windSpeed = document.getElementById("windSpeed");
+const change_windSpeed = (speed) => {
+  windSpeed.innerHTML = speed * 3.6 + " km/s";
+  console.log(speed * 3.6);
+};
+
+const humidity = document.getElementById("humidity");
+const change_humidity = (humidityData) => {
+  humidity.innerText = humidityData + "%";
+
+  console.log(humidity.innerHTML);
+};
+const temp = document.getElementById("temp");
+
+const change_temp = (tempData) => {
+  temp.innerHTML = tempData - 273;
+  console.log(tempData - 273);
 };
