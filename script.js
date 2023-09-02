@@ -24,7 +24,11 @@ citiesList.addEventListener("click", (e) => {
   if (e.target.className === "col d-flex justify-content-start cityc") {
     searchWindow.style.display = "none";
     weatherWindow.style.display = "block";
-    change_city(e.target.innerHTML);
+    if (e.target.innerHTML === "Konumum") {
+      find_location();
+    } else {
+      change_city(e.target.innerHTML);
+    }
   }
 });
 
