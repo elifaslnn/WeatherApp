@@ -59,6 +59,33 @@ input.addEventListener("keydown", (e) => {
   }
 });
 
+//find the location
+const find_location = () => {
+  const success = (position) => {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    console.log(latitude + " - " + longitude);
+    fetch(
+      `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=55a24ff60e18a16eb522c3c3dba989f0`
+    )
+      .then((data) => {
+        return data.json();
+      })
+      .then((data) => {
+        const city = data[0].name;
+        return city;
+      })
+      .then((city) => {
+        change_city(city);
+      });
+  };
+  const error = () => {
+    change_city("İstanbul");
+  };
+  navigator.geolocation.getCurrentPosition(success, error);
+  //latitude:enlem
+  //longitude:boylam
+};
 //change the city
 const cityName = document.getElementById("cityName");
 function change_city(city_to_replace) {
@@ -79,6 +106,7 @@ const change_weather = (city_to_replace) => {
         return response.json();
       })
       .then(function (weathers) {
+        console.log(weathers);
         const weather = weathers.weather[0].main;
         weatherCondition.innerHTML = weather;
         change_weatherIcon(weather);
@@ -111,18 +139,20 @@ const change_weatherIcon = (weather) => {
 const windSpeed = document.getElementById("windSpeed");
 const change_windSpeed = (speed) => {
   windSpeed.innerHTML = speed * 3.6 + " km/s";
-  console.log(speed * 3.6);
 };
 
 const humidity = document.getElementById("humidity");
 const change_humidity = (humidityData) => {
   humidity.innerText = humidityData + "%";
-
-  console.log(humidity.innerHTML);
 };
+
 const temp = document.getElementById("temp");
-
 const change_temp = (tempData) => {
-  temp.innerHTML = tempData - 273;
-  console.log(tempData - 273);
+  temp.innerHTML = tempData - 273 + "°";
 };
+
+//konumu algılasın onunla başlasın
+find_location();
+//fetch- catch yapısı
+//hava durumuna göre renk
+//saate göre renk
