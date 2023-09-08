@@ -22,19 +22,21 @@ citiesList.addEventListener("click", (e) => {
     e.target.parentElement.remove();
   }
   if (e.target.className === "col d-flex justify-content-start cityc") {
-    searchWindow.style.display = "none";
-    weatherWindow.style.display = "block";
     if (e.target.innerHTML === "Konumum") {
+      searchWindow.style.display = "none";
+      weatherWindow.style.display = "block";
       find_location();
     } else {
-      change_city(e.target.innerHTML);
+      //konum bulunursa
+      change_weather(e.target.innerHTML);
+      //konum bulunamazsa
     }
   }
 });
 
 //add to list
-
 const input = document.querySelector("#searchBox");
+
 input.addEventListener("keydown", (e) => {
   if (e.keyCode == 13) {
     console.log(input.value);
@@ -79,22 +81,31 @@ const find_location = () => {
         const city = data[0].name;
         return city;
       })
+      .catch(() => {
+        alert("asdf");
+      })
       .then((city) => {
-        change_city(city);
+        change_weather(city);
       });
   };
   const error = () => {
-    change_city("İstanbul");
+    change_weather("İstanbul");
   };
   navigator.geolocation.getCurrentPosition(success, error);
   //latitude:enlem
   //longitude:boylam
 };
+
 //change the city
 const cityName = document.getElementById("cityName");
-function change_city(city_to_replace) {
-  cityName.innerText = city_to_replace;
-  change_weather(city_to_replace);
+// function change_city(city_to_replace) {
+//   cityName.innerText = city_to_replace;
+//   change_weather(city_to_replace);
+// }
+
+function doNot_changeCity() {
+  weatherWindow.style.display = "none";
+  searchWindow.style.display = "block";
 }
 
 //change the weather
@@ -110,9 +121,13 @@ const change_weather = (city_to_replace) => {
         return response.json();
       })
       .then(function (weathers) {
+        searchWindow.style.display = "none";
+        weatherWindow.style.display = "block";
+        cityName.innerText = city_to_replace;
         console.log(weathers);
-        const weather = weathers.weather[0].main;
-        weatherCondition.innerHTML = weather;
+        const weather = weathers.weather[0].description;
+        //weatherCondition.innerHTML = weather;
+        change_WeatherDescription(weather);
         change_weatherIcon(weather);
 
         const windSpeed = weathers.wind.speed;
@@ -123,33 +138,62 @@ const change_weather = (city_to_replace) => {
 
         const temp = weathers.main.temp;
         change_temp(Math.floor(temp));
+      })
+      .catch(() => {
+        alert("girdiğiniz konum bulunamadı");
+        doNot_changeCity();
       });
   });
 };
 
-const weatherIcon = document.getElementById("weatherIcon");
-const change_weatherIcon = (weather) => {
-  if (weather == "Clouds") {
-    weatherIcon.src = "weatherIcon/cloudy.png";
-  } else if (weather === "Rain") {
-    weatherIcon.src = "weatherIcon/rain.png";
-  } else if (weather === "Clear") {
-    weatherIcon.src = "weatherIcon/sun.png";
-  } else if (weather === "snow") {
-    weatherIcon.src = "weatherIcon/snow.png";
+//change weather description
+const change_WeatherDescription = (description) => {
+  if (description == "broken clouds") {
+    weatherCondition.innerHTML = "Yer Yer Açık Bulut";
+  } else if (description == "clear sky") {
+    weatherCondition.innerHTML = "Açık Hava";
+  } else if (description == "overcast clouds") {
+    weatherCondition.innerHTML = "Çok Bulutlu";
+  } else if (description == "light rain") {
+    weatherCondition.innerHTML = "Hafif Yağmur";
+  } else if (description == "scattered clouds") {
+    weatherCondition.innerHTML = "Parçalı Bulutlu";
+  } else if (description == "moderate rain") {
+    weatherCondition.innerHTML = "Yağmur"; //güneşli yağmur iconu
   }
 };
 
+const weatherIcon = document.getElementById("weatherIcon");
+
+const change_weatherIcon = (weather) => {
+  if (weather == "broken clouds") {
+    weatherIcon.src = "weatherIcon/cloudy.png";
+  } else if (weather == "clear sky") {
+    weatherIcon.src = "weatherIcon/sun.png";
+  } else if (weather == "overcast clouds") {
+    weatherIcon.src = "weatherIcon/clouds.png";
+  } else if (weather == "light rain") {
+    weatherIcon.src = "weatherIcon/rain.png";
+  } else if (weather == "scattered clouds") {
+    weatherIcon.src = "weatherIcon/cloudy.png";
+  } else if (weather == "moderate rain") {
+    weatherIcon.src = "weatherIcon/cloudRain.png";
+  }
+};
+
+//change wind speed
 const windSpeed = document.getElementById("windSpeed");
 const change_windSpeed = (speed) => {
   windSpeed.innerHTML = speed * 3.6 + " km/s";
 };
 
+//change humidity
 const humidity = document.getElementById("humidity");
 const change_humidity = (humidityData) => {
   humidity.innerText = humidityData + "%";
 };
 
+//change temp
 const temp = document.getElementById("temp");
 const change_temp = (tempData) => {
   temp.innerHTML = tempData - 273 + "°";
@@ -157,6 +201,5 @@ const change_temp = (tempData) => {
 
 //konumu algılasın onunla başlasın
 find_location();
-//fetch- catch yapısı
-//hava durumuna göre renk
-//saate göre renk
+
+//olmayan şehir için böyle bir yok desin
